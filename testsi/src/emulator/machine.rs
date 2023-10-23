@@ -119,6 +119,8 @@ impl Machine {
                 notice_file_pattern,
                 report_file_pattern
             ))
+            .stderr(std::process::Stdio::null())
+            .stdout(std::process::Stdio::null())
             .status()
             .expect("failed to execute cartesi-machine process").success();
 
@@ -208,6 +210,8 @@ fn spawn_remote_machine(config: &MachineConfig, image: &str) -> Child {
                 REMOTE_MACHINE_CHECKIN_PORT
             ))
             .arg("--no-remote-destroy")
+            .stderr(std::process::Stdio::null())
+            .stdout(std::process::Stdio::null())
             .status()
             .expect("failed to execute cartesi-machine process (load)")
             .success(),

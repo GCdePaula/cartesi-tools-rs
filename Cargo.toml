@@ -5,7 +5,7 @@ members = [
   "testsi",
   "testsi-macros",
 
-  "test-case",
+  "examples/echo",
 ]
 
 [workspace.package]
@@ -15,6 +15,5 @@ edition = "2021"
 
 [workspace.dependencies]
 testsi-macros = { version = "0.1", path = "testsi-macros" }
+testsi = { version = "0.1", path = "testsi" }
 
-libtest-mimic = "0.6"
-inventory = "0.3"

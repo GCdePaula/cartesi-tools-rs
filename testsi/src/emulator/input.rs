@@ -13,7 +13,7 @@ pub struct Input {
 }
 
 impl Input {
-    pub fn new(sender: Address) -> Self {
+    pub fn from_address(sender: Address) -> Self {
         Self {
             sender,
             block_number: U256::ZERO,

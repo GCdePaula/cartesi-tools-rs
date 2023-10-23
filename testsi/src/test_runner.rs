@@ -17,8 +17,12 @@ pub use testsi_macros::test_dapp;
 macro_rules! testsi_main {
     () => {
         fn main() {
-            //let args = testsi::TestArguments::try_args();
-            let mimic_args = testsi::libtest_mimic::Arguments::default();
+            let mimic_args = {
+                let mut a = testsi::libtest_mimic::Arguments::default();
+                a.test_threads = Some(1);
+                a.color = Some(testsi::libtest_mimic::ColorSetting::Always);
+                a
+            };
             let mut trials: Vec<_> = testsi::inventory::iter::<testsi::TestCase>
                 .into_iter()
                 .map(|c| {
