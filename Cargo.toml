@@ -3,7 +3,11 @@ resolver = "2"
 
 members = [
   "testsi",
-  # "testsi-macros",
+  "trolley",
+  "libcmt-sys",
+
+  # TODO: put this in rollups-contracts, using forge-bing
+  "types",
 
   "examples/echo-test",
 ]
@@ -13,7 +17,14 @@ version = "0.1.0"
 license = "Apache-2.0"
 edition = "2021"
 
+
 [workspace.dependencies]
 # testsi-macros = { version = "0.1", path = "testsi-macros" }
+libcmt-sys = { version = "0.1", path = "libcmt-sys" }
 testsi = { version = "0.1", path = "testsi" }
+types = { version = "0.1", path = "types" }
 
+cartesi-machine = { version = "0.17", git = "https://github.com/cartesi/dave", branch = "feature/improve-bindings"}
+
+alloy-sol-types = "0.6"
+alloy-primitives = "0.6"

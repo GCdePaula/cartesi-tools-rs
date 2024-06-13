@@ -1,0 +1,3 @@
+[submodule "trolley/libcmt/libcmt-sys/machine-emulator-tools"]
+	path = libcmt-sys/machine-emulator-tools
+	url = https://github.com/cartesi/machine-emulator-tools

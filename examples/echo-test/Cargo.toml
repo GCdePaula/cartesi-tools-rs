@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 testsi = { workspace = true }
+types = { workspace = true }
 
-alloy-sol-types = "0.4"
-alloy-primitives = "0.4"
+alloy-primitives = { workspace = true }
+hex = "0.4.3"
