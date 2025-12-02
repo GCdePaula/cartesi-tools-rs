@@ -2,14 +2,13 @@
 resolver = "2"
 
 members = [
-  "testsi",
-  "trolley",
-  "libcmt-sys",
+  "host/testsi",
+  "guest/trolley",
+  "guest/libcmt-sys",
 
-  # TODO: put parts of this in rollups-contracts, using forge bing --alloy
   "types",
 
-  # "examples/echo-test",
+  # Examples
   "examples/echo-dapp",
   "examples/echo-test",
 ]
@@ -21,13 +20,11 @@ edition = "2021"
 
 
 [workspace.dependencies]
-# testsi-macros = { version = "0.1", path = "testsi-macros" }
-libcmt-sys = { version = "0.1", path = "libcmt-sys" }
-testsi = { version = "0.1", path = "testsi" }
-trolley = { version = "0.1", path = "trolley" }
+testsi = { version = "0.1", path = "host/testsi" }
+
+libcmt-sys = { version = "0.1", path = "guest/libcmt-sys" }
+trolley = { version = "0.1", path = "guest/trolley" }
+
 types = { version = "0.1", path = "types" }
 
-cartesi-machine = { version = "0.18", git = "https://github.com/cartesi/dave", branch = "feature/update-machine"}
-
-alloy-sol-types = "0.8"
-alloy-primitives = "0.8"
+cartesi-machine = { version = "2", git = "https://github.com/cartesi/dave", branch = "feature/bump-emulator-2-stephen", features = ["build_uarch"] }

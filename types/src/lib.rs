@@ -1,7 +1,8 @@
+pub use alloy_primitives;
+pub use alloy_sol_types;
+
 use alloy_sol_types::sol;
 
-// TODO create crate with alloy type definitions in rollup-contracts once this is merged:
-// https://github.com/foundry-rs/foundry/pull/7919
 sol! {
     #[derive(Debug, PartialEq, Eq)]
     function EvmAdvance(

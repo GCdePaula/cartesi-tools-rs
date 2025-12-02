@@ -13,12 +13,18 @@ pub enum Output {
 impl Output {
     pub fn abi_decode<T: AsRef<[u8]>>(payload: &T) -> Self {
         let payload = payload.as_ref();
+        assert!(
+            payload.len() >= 4,
+            "encoded output must contain a 4-byte selector, got {} byte(s)",
+            payload.len()
+        );
         let selector = &payload[..4];
-        if selector == Notice::SELECTOR {
-            Output::Notice(Notice::abi_decode(payload, true).expect("failed to decode notice"))
+        if selector == Notice::SELECTOR.as_slice() {
+            Output::Notice(Notice::abi_decode(payload).expect("failed to decode notice"))
+        } else if selector == Voucher::SELECTOR.as_slice() {
+            Output::Voucher(Voucher::abi_decode(payload).expect("failed to decode voucher"))
         } else {
-            assert_eq!(selector, Voucher::SELECTOR);
-            Output::Voucher(Voucher::abi_decode(payload, true).expect("failed to decode voucher"))
+            panic!("unknown output selector: {selector:?}");
         }
     }
 
@@ -31,7 +37,7 @@ impl Output {
 
     pub fn expect_notice(&self) -> &Notice {
         self.try_notice()
-            .expect(format!("expected voucher {:?} to be a notice", self).as_str())
+            .unwrap_or_else(|| panic!("expected voucher {:?} to be a notice", self))
     }
 
     pub fn try_voucher(&self) -> Option<&Voucher> {
@@ -43,7 +49,7 @@ impl Output {
 
     pub fn expect_voucher(&self) -> &Voucher {
         self.try_voucher()
-            .expect(format!("expected notice {:?} to be a voucher", self).as_str())
+            .unwrap_or_else(|| panic!("expected notice {:?} to be a voucher", self))
     }
 }
 
@@ -118,7 +124,7 @@ impl InputBuilder {
     }
 
     pub fn encode(self, chain_id: usize, input_index: U256, dapp: Address) -> Vec<u8> {
-        let x = EvmAdvanceCall::new((
+        let x = Input::new((
             U256::from(chain_id),
             dapp,
             self.sender,
@@ -134,5 +140,16 @@ impl InputBuilder {
 
     pub fn payload(&self) -> &[u8] {
         &self.payload
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Output;
+
+    #[test]
+    #[should_panic(expected = "encoded output must contain a 4-byte selector")]
+    fn output_decode_panics_cleanly_on_short_payload() {
+        let _ = Output::abi_decode(&[0_u8, 1, 2]);
     }
 }

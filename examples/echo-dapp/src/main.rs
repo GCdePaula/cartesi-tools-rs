@@ -1,8 +1,7 @@
-use echo_lib;
 use trolley::cmt;
 
 fn main() {
-    println!("Hello, World!");
-    let rollup = cmt::RollupCmt::new();
-    echo_lib::run(rollup);
+    let rollup = cmt::RollupCmt::try_new().expect("failed to initialize rollup");
+    let app = echo_lib::App::new(rollup);
+    app.run();
 }

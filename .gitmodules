@@ -1,0 +1,3 @@
+[submodule "trolley/libcmt-sys/machine-guest-tools"]
+	path = guest/libcmt-sys/machine-guest-tools
+	url = https://github.com/cartesi/machine-guest-tools

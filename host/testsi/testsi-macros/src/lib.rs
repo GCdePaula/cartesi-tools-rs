@@ -2,23 +2,15 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenTree;
 use quote::{quote, spanned::Spanned};
 use syn::{
+    ItemFn, LitStr, Result as SynResult,
     parse::{Parse, ParseStream},
-    parse_macro_input, ItemFn, Result as SynResult,
+    parse_macro_input,
 };
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 struct Args {
     ignore: bool,
-    kind: Option<String>,
-}
-
-impl Default for Args {
-    fn default() -> Self {
-        Self {
-            ignore: false,
-            kind: None,
-        }
-    }
+    kind: Option<LitStr>,
 }
 
 impl Parse for Args {
@@ -28,9 +20,9 @@ impl Parse for Args {
         while !input.is_empty() {
             let t = input.parse()?;
             match t {
-                TokenTree::Ident(i) if i.to_string() == "ignore" => pa.ignore = true,
+                TokenTree::Ident(i) if i == "ignore" => pa.ignore = true,
 
-                TokenTree::Ident(i) if i.to_string() == "kind" => match input.parse()? {
+                TokenTree::Ident(i) if i == "kind" => match input.parse()? {
                     TokenTree::Group(g) => {
                         let arr: Vec<_> = g.stream().into_iter().collect();
                         if arr.len() != 1 {
@@ -40,16 +32,14 @@ impl Parse for Args {
                             ));
                         }
 
-                        if let TokenTree::Literal(kind) = &arr[0] {
-                            pa.kind = Some(kind.to_string());
-                        }
+                        pa.kind = Some(syn::parse2(g.stream())?);
                     }
 
                     x => {
                         return Err(syn::Error::new(
                             x.span(),
                             format!("unrecognized kind `{x}`"),
-                        ))
+                        ));
                     }
                 },
 
@@ -75,7 +65,7 @@ pub fn test_dapp(args: TokenStream, input: TokenStream) -> TokenStream {
     let name = &test_fn.sig.ident;
     let test_name = name.to_string();
 
-    if test_fn.sig.inputs.len() != 0 {
+    if !test_fn.sig.inputs.is_empty() {
         return syn::Error::new(
             test_fn.sig.__span(),
             format!("test function `{}` must have no arguments", name),
@@ -85,11 +75,7 @@ pub fn test_dapp(args: TokenStream, input: TokenStream) -> TokenStream {
     }
 
     let ignore = parsed_args.ignore;
-    let kind = if let Some(k) = parsed_args.kind {
-        quote! { Some(#k) }
-    } else {
-        quote! { Some }
-    };
+    let kind = quote_kind(parsed_args.kind.as_ref());
 
     let expanded = quote! {
         #test_fn
@@ -100,4 +86,30 @@ pub fn test_dapp(args: TokenStream, input: TokenStream) -> TokenStream {
     };
 
     TokenStream::from(expanded)
+}
+
+fn quote_kind(kind: Option<&LitStr>) -> proc_macro2::TokenStream {
+    if let Some(kind) = kind {
+        quote! { Some(#kind) }
+    } else {
+        quote! { None }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::quote_kind;
+    use proc_macro2::Span;
+    use syn::LitStr;
+
+    #[test]
+    fn quote_kind_defaults_to_none() {
+        assert_eq!(quote_kind(None).to_string(), "None");
+    }
+
+    #[test]
+    fn quote_kind_wraps_literal() {
+        let kind = LitStr::new("dapp", Span::call_site());
+        assert_eq!(quote_kind(Some(&kind)).to_string(), "Some (\"dapp\")");
+    }
 }

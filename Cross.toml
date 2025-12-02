@@ -1,0 +1,4 @@
+[target.riscv64gc-unknown-linux-musl]
+# Pinning to a specific version ensures that libc headers and compiler versions 
+# never change between builds or teammates.
+image = "ghcr.io/cross-rs/riscv64gc-unknown-linux-musl@sha256:f5a375283c54578efcc6e61c78ea7661392c2e9b2e108afe89938d2f7b8b489d"

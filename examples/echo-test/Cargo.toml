@@ -7,6 +7,3 @@ edition.workspace = true
 [dependencies]
 testsi = { workspace = true }
 types = { workspace = true }
-
-alloy-primitives = { workspace = true }
-alloy-sol-types = { workspace = true }

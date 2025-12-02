@@ -11,9 +11,6 @@ types = { workspace = true }
 
 cartesi-machine = { workspace = true }
 
-alloy-sol-types = { workspace = true }
-alloy-primitives = { workspace = true }
-
 inventory = "0.3"
 libtest-mimic = "0.6"
 thiserror = "1.0"

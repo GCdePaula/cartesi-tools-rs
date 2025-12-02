@@ -1,0 +1,2 @@
+build-riscv:
+  DOCKER_DEFAULT_PLATFORM=linux/amd64 cross build --target riscv64gc-unknown-linux-musl --release
