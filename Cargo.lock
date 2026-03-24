@@ -520,7 +520,7 @@ dependencies = [
 [[package]]
 name = "cartesi-machine"
 version = "2.0.0"
-source = "git+https://github.com/cartesi/dave?branch=feature%2Fbump-emulator-2-stephen#5d0560a04f623318af9ef5b7f193170b618b6ced"
+source = "git+https://github.com/cartesi/dave?branch=feature%2Fbump-emulator-2-coutinho#317a88a32a1b4a6002d561f37bb833843df55cba"
 dependencies = [
  "base64",
  "cartesi-machine-sys",
@@ -534,7 +534,7 @@ dependencies = [
 [[package]]
 name = "cartesi-machine-sys"
 version = "2.0.0"
-source = "git+https://github.com/cartesi/dave?branch=feature%2Fbump-emulator-2-stephen#5d0560a04f623318af9ef5b7f193170b618b6ced"
+source = "git+https://github.com/cartesi/dave?branch=feature%2Fbump-emulator-2-coutinho#317a88a32a1b4a6002d561f37bb833843df55cba"
 dependencies = [
  "bindgen",
  "cfg-if",

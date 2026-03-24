@@ -27,4 +27,4 @@ trolley = { version = "0.1", path = "guest/trolley" }
 
 types = { version = "0.1", path = "types" }
 
-cartesi-machine = { version = "2", git = "https://github.com/cartesi/dave", branch = "feature/bump-emulator-2-stephen", features = ["build_uarch"] }
+cartesi-machine = { version = "2", git = "https://github.com/cartesi/dave", branch = "feature/bump-emulator-2-coutinho", features = ["build_uarch"] }
